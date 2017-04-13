@@ -1,0 +1,128 @@
+Index: controllers/flight_tools.php
+===================================================================
+--- controllers/flight_tools.php	(revision 0)
++++ controllers/flight_tools.php	(working copy)
+@@ -0,0 +1,62 @@
++<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
++
++class Flight_tools extends MX_Controller {
++    
++  function __construct() {      
++    $this->menu = $this->cek();
++   
++  }
++  
++  public function index(){
++   
++    $pst = $this->input->post(NULL, TRUE);
++    $detail = array();
++    $data_debug = "";
++    if($pst){
++      $detail = array("pnr_code" => $pst['pnr_code'], "payment_type" => $pst['payment_type']);
++      
++      $kirim = array(
++              'id_user'          =>  $this->session->userdata('id'),
++              'tanggal'            =>  date("Y-m-d H:i:s"),
++              'code_book'           =>  $pst['pnr_code'],
++              'type'            =>  $pst['payment_type'],
++              "create_by_users" => $this->session->userdata('id'),
++              "create_date" =>  date("Y-m-d H:i:s"),
++              "update_by_users" => $this->session->userdata('id')
++          );
++          $this->global_models->insert("report_log_issued", $kirim);
++      
++     $pr =$this->global_models->get("tiket_book", array("book_code" => $pst['pnr_code']));
++     $post = array(
++      'users'             => USERSSERVER, 
++      'password'          => PASSSERVER,
++      "book_code"         => $pst['pnr_code'],
++      'harga_bayar'       => $pr[0]->harga_bayar,
++      'channel'           => $pst['payment_type'],
++    );
++    $data = $this->curl_mentah($post, URLSERVER."json/issued");
++    $data_array = json_decode($data);
++    
++    $data_debug = $this->debug($data_array);
++    }
++    $this->template->build('flight_tools', 
++        array(
++              'url'         => base_url()."themes/".DEFAULTTHEMES."/",
++              'menu'        => 'flight_tools',
++              'title'   => 'Flight Tools',
++              'detail'  => $detail,
++              'data_debug'  => $data_debug,
++              'breadcrumb'  => array(
++                    "flight_tools"  => "flight_tools"
++                ),
++            ));
++      $this->template
++        ->set_layout('default')
++        ->build('flight_tools');
++    
++  }
++ 
++}
++
++/* End of file welcome.php */
++/* Location: ./application/controllers/welcome.php */
+\ No newline at end of file
+Index: views/flight_tools.php
+===================================================================
+--- views/flight_tools.php	(revision 0)
++++ views/flight_tools.php	(working copy)
+@@ -0,0 +1,55 @@
++
++<section class="content">
++    <div class="row">
++        <!-- left column -->
++        <div class="col-md-12">
++            <!-- general form elements -->
++            <div class="box box-primary">
++                <div class="box-header">
++                    <!--<h3 class="box-title">Quick Example</h3>-->
++                </div><!-- /.box-header -->
++                <!-- form start -->
++                <?php print $this->form_eksternal->form_open("", 'role="form"', 
++                      array("id_detail" => ""))?>
++                  <div class="box-body">
++                    <div class="control-group">
++                      <label>PNR Code</label>
++                      <div class="input-group">
++                         
++                          <?php print $this->form_eksternal->form_input('pnr_code', $detail['pnr_code'], 'class="form-control" placeholder="PNR Code"')?>
++                      </div>
++										</div>
++                    
++                    <div class="control-group">
++                      <?php
++                     $data_debug;
++                      ?>
++										</div>
++                    
++										<div class="control-group">
++                      <label>Payment Type</label>
++                      <div class="input-group">
++                        <?php
++                  $channel = array(
++                            0 => "-Pilih-",
++                            1 => "BCA",
++                            2 => "Mega CC",
++                            3 => "Visa/Master",
++                            4 => "Mega Priority"
++                          );
++                  ?>
++                          <?php print $this->form_eksternal->form_dropdown('payment_type', $channel, array($detail['payment_type']), 'class="form-control" placeholder="Payment Type"')?>
++                      </div>
++										</div>
++                    
++                  </div>
++                  <div class="box-footer">
++                      <button class="btn btn-primary" type="submit">Submit</button>
++                    
++                  </div>
++                </form>
++            </div><!-- /.box -->
++        </div><!--/.col (left) -->
++    </div>   <!-- /.row -->
++</section>
++

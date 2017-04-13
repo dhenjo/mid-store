@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '';
+$db['default']['password'] = 'd4t4c0d3t0ur';
 $db['default']['database'] = 'store_mid';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
@@ -66,7 +66,7 @@ $db['default']['stricton'] = FALSE;
 
 $db['terminal']['hostname'] = 'localhost';
 $db['terminal']['username'] = 'root';
-$db['terminal']['password'] = '';
+$db['terminal']['password'] = 'd4t4c0d3t0ur';
 $db['terminal']['database'] = 'terminal';
 $db['terminal']['dbdriver'] = 'mysql';
 $db['terminal']['dbprefix'] = '';

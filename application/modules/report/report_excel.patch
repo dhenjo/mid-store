@@ -1,0 +1,36 @@
+Index: models/mflight.php
+===================================================================
+--- models/mflight.php	(revision 70)
++++ models/mflight.php	(working copy)
+@@ -34,7 +34,7 @@
+       . " FROM tiket_book AS A"
+       . " INNER JOIN tiket_flight AS B ON B.id_tiket_book = A.id_tiket_book"
+       . " WHERE A.book_code IS NOT NULL {$date} {$book_code} {$maskapai} {$status} {$pemesan}"
+-      . " GROUP BY A.book_code");
++      . " GROUP BY A.book_code ORDER BY A.tanggal DESC");
+       
+       return $data;
+     }
+@@ -432,16 +432,16 @@
+       $objPHPExcel = $this->phpexcel;
+       $objPHPExcel->getProperties()->setCreator("AntaVaya")
+ 							 ->setLastModifiedBy("AntaVaya")
+-							 ->setTitle("Data Flight Report Transaksi ")
+-							 ->setSubject("Data Flight Report Transaksi ")
+-							 ->setDescription("Report Data Transaksi Flight.")
+-							 ->setKeywords("Report Data Transaksi Flight")
+-							 ->setCategory("Data Transaksi Flight");
++							 ->setTitle("Data Flight Report Maskapai ")
++							 ->setSubject("Data Flight Report Maskapai ")
++							 ->setDescription("Report Data Maskapai Flight.")
++							 ->setKeywords("Report Data Maskapai Flight")
++							 ->setCategory("Data Maskapai Flight");
+ 
+       $objPHPExcel->setActiveSheetIndex(0);
+       
+       $objPHPExcel->getActiveSheet()->mergeCells('A1:F2');
+-      $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Report Data Transaksi ');
++      $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Report Data Maskapai ');
+       $objPHPExcel->getActiveSheet()->getStyle('A1:F2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+       $objPHPExcel->getActiveSheet()->getStyle('A1:F2')->getFill()->getStartColor()->setARGB('FF808080');
+       $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_WHITE);

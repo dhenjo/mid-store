@@ -1,0 +1,13 @@
+Index: controllers/flight.php
+===================================================================
+--- controllers/flight.php	(revision 70)
++++ controllers/flight.php	(working copy)
+@@ -159,7 +159,7 @@
+       . " FROM tiket_book AS A"
+       . " INNER JOIN tiket_flight AS B ON B.id_tiket_book = A.id_tiket_book"
+       . " WHERE A.book_code IS NOT NULL {$date} {$book_code} {$maskapai} {$status} {$pemesan}"
+-      . " GROUP BY A.book_code"
++      . " GROUP BY A.book_code ORDER BY A.tanggal DESC"
+       . " LIMIT {$start}, 10");
+       
+       $data_maskapai = array("0"	=> "All",

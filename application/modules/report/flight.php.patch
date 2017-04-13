@@ -1,0 +1,31 @@
+Index: controllers/flight.php
+===================================================================
+--- controllers/flight.php	(revision 66)
++++ controllers/flight.php	(working copy)
+@@ -547,7 +547,7 @@
+     }
+     
+     if($this->session->userdata('flight_report_maskapai_book_code')){
+-      $book_code = " AND (C.book_code LIKE '%{$this->session->userdata('flight_report_maskapai_book_code')}%' OR B.book_code LIKE '%{$this->session->userdata('flight_report_transaksi_book_code')}%')";
++      $book_code = " AND (C.book_code LIKE '%{$this->session->userdata('flight_report_maskapai_book_code')}%' OR B.book_code LIKE '%{$this->session->userdata('flight_report_maskapai_book_code')}%')";
+     }
+     
+     if($this->session->userdata('flight_report_maskapai_payment')){
+@@ -559,7 +559,7 @@
+     }
+     
+     if($this->session->userdata('flight_report_maskapai_tiket_no')){
+-      $maskapai = " AND C.issued_no LIKE '{$this->session->userdata('flight_report_maskapai_tiket_no')}%'";
++      $issued_no = " AND C.issued_no LIKE '{$this->session->userdata('flight_report_maskapai_tiket_no')}%'";
+     }
+     
+     
+@@ -588,7 +588,7 @@
+       . " LEFT JOIN tiket_book AS B ON C.id_tiket_book = B.id_tiket_book"
+       . " WHERE (B.status = 3 OR B.status = 5)"
+       . " AND C.price > 0"
+-      . " {$date} {$book_code} {$channel2} {$maskapai}"
++      . " {$date} {$book_code} {$channel2} {$maskapai} {$issued_no}"
+       . " GROUP BY C.book_code"
+       . " {$orderby}");
+ //    $this->debug($report, true);
